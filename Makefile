@@ -1,5 +1,5 @@
 PRG            = main
-OBJ            = main.o
+OBJ            = main.o printf.o
 #MCU_TARGET     = at90s2313
 #MCU_TARGET     = at90s2333
 #MCU_TARGET     = at90s4414
@@ -54,7 +54,7 @@ MCU_TARGET     = atmega8
 #MCU_TARGET     = attiny861
 OPTIMIZE       = -O2
 
-DEFS           = -DF_CPU=1000000
+DEFS           = -DF_CPU=8000000
 LIBS           =
 
 # You should not have to change anything below here.
@@ -128,6 +128,10 @@ esrec: $(PRG)_eeprom.srec
 
 avrdude:
 	avrdude -p m8 -c usbasp -B 4 -U flash:w:$(PRG).hex:i
+prog:
+	avrdude -p m8 -c arduino -P /dev/ttyUSB0 -b 19200 -U flash:w:$(PRG).hex:i
+term:
+	screen /dev/ttyUSB0 19200
 
 FIG2DEV                 = fig2dev
 EXTRA_CLEAN_FILES       = *.hex *.bin *.srec
